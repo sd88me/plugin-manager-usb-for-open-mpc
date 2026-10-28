@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Add an optional `display-rotation.txt` on the USB stick (`180` turns the picture and touch upside down; `0` or empty keeps the automatic choice) for panels mounted the other way up, such as a reported MPC XL on OS 3.9.1 that showed the manager inverted. The manager's result log now records the display mode and the raw `inmusic,panel-rotation` device tree property that MPC itself uses, so the right default can be set from real reports.
+
 ## 1.2.1 — 28-10-2026
 
 - Follow the Gen2 MPC content-download drive preference for automatic plugin installation, using the mounted drive’s `Synths` folder instead of a guessed `/nvme/Synths` fallback.
