@@ -1,5 +1,7 @@
 # Plugin Manager USB for OPEN MPC
 
+> **This is a fork.** It is based on [Twisted Cable's Plugin Manager USB for OPEN MPC](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc) (MIT, copyright 2026 Twisted Cable), which is where the manager, the USB route and the OS 3.10 helper come from. This fork exists so fixes found while testing on more devices can ship quickly; the ones that work are offered back upstream as pull requests. Its releases are numbered on its own (`v1.2.2` is upstream `v1.2.1` plus the changes in [CHANGELOG.md](CHANGELOG.md)) and its in-manager update check looks at **this** repository's releases, not upstream's. For the upstream project, use its releases and guide.
+
 [![Download installer](https://img.shields.io/badge/Download-1.2.1-brightgreen?logo=github)](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/download/v1.2.1/plugin-manager-usb-v1.2.1.zip)
 [![Latest release](https://img.shields.io/github/v/release/Eurikon/plugin-manager-usb-for-open-mpc?logo=github&label=Release)](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest)
 [![Changelog](https://img.shields.io/badge/Changelog-History-blue?logo=github)](CHANGELOG.md)
