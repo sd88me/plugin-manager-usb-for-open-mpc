@@ -1,7 +1,9 @@
 # Plugin Manager USB for OPEN MPC
 
-[![Download installer](https://img.shields.io/badge/Download-1.2.2-brightgreen?logo=github)](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/download/v1.2.2/plugin-manager-usb-v1.2.2.zip)
-[![Latest release](https://img.shields.io/github/v/release/Eurikon/plugin-manager-usb-for-open-mpc?logo=github&label=Release)](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest)
+> **This is a fork.** It is based on [Twisted Cable's Plugin Manager USB for OPEN MPC](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc) (MIT, copyright 2026 Twisted Cable), which is where the manager, the USB route and the OS 3.10 helper come from. This fork ships the **OpenMPC Plugin Manager G2** welcome-screen option (poloq's Plugin Manager with Gen 2 support, found by tag prefix) while that change is under review upstream as [pull request #10](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/pull/10); everything else is upstream's (`v1.2.3` here is upstream `v1.2.2` plus the changes in [CHANGELOG.md](CHANGELOG.md)). Its in-manager update check looks at **this** repository's releases, not upstream's, and its version numbers are its own. When upstream carries the change, use upstream's releases.
+
+[![Download installer](https://img.shields.io/badge/Download-1.2.3-brightgreen?logo=github)](https://github.com/sd88me/plugin-manager-usb-for-open-mpc/releases/download/v1.2.3/plugin-manager-usb-v1.2.3.zip)
+[![Latest release](https://img.shields.io/github/v/release/sd88me/plugin-manager-usb-for-open-mpc?logo=github&label=Release)](https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest)
 [![Changelog](https://img.shields.io/badge/Changelog-History-blue?logo=github)](CHANGELOG.md)
 [![User guide](https://img.shields.io/badge/Guide-Website-blue?logo=githubpages)](https://eurikon.github.io/plugin-manager-usb-for-open-mpc/guide.html)
 [![MIT license](https://img.shields.io/github/license/Eurikon/plugin-manager-usb-for-open-mpc)](LICENSE)
