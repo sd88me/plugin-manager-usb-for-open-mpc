@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Add an optional `display-rotation.txt` on the USB stick (`180` turns the picture and touch upside down; `0` or empty keeps the automatic choice) for panels mounted the other way up, such as a reported MPC XL on OS 3.9.1 that showed the manager inverted. The manager's result log now records the display mode and the raw `inmusic,panel-rotation` device tree property that MPC itself uses, so the right default can be set from real reports.
+- When the OS 3.10 helper's `bootstrap.sh` refuses to start, also record the reason and exit code in `bootstrap-result.txt` on the confirmed USB stick (only a plain `/media/<name>` volume carrying the manager marker; never through a symlink; capped at 64 KiB). The journal drops the script's stderr, so a refusal used to leave only an exit status.
 
 ## 1.2.1 — 28-10-2026
 
