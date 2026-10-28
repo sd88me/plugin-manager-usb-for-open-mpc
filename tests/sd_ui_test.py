@@ -48,6 +48,13 @@ def compact_capture(path):
 
 
 
+def manager_repo():
+    match = re.search(r'^#define MPC_MANAGER_REPO "([^"]+)"$', (SOURCE / "src/version.hpp").read_text(), re.MULTILINE)
+    if match is None:
+        raise ValueError("Missing manager release repository")
+    return match.group(1)
+
+
 def next_version():
     match = re.search(r'^#define MPC_MANAGER_VERSION "(\d+)\.(\d+)\.(\d+)"$',
                       (SOURCE / "src/version.hpp").read_text(), re.MULTILINE)
@@ -91,10 +98,10 @@ def update_fixture(root):
     package = root / "update.zip"
     package.write_bytes(archive(files))
     release = {"draft": False, "prerelease": False, "tag_name": "v" + version,
-               "html_url": f"https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/tag/v{version}",
+               "html_url": f"https://github.com/{manager_repo()}/releases/tag/v{version}",
                "assets": [{"name": f"plugin-manager-usb-v{version}.zip", "state": "uploaded",
                            "size": package.stat().st_size, "digest": "sha256:" + digest(package),
-                           "browser_download_url": f"https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/download/v{version}/plugin-manager-usb-v{version}.zip"}]}
+                           "browser_download_url": f"https://github.com/{manager_repo()}/releases/download/v{version}/plugin-manager-usb-v{version}.zip"}]}
     (root / "release.json").write_text(json.dumps(release))
     for name, value in {"manager-preferences.json": json.dumps({"schema": 1, "dark_theme": False, "hide_welcome": False}),
                         "plugin-history.json": json.dumps({"schema": 1, "plugins": {}}), "local-plugins/keep.txt": "User package fixture\n"}.items():
@@ -145,10 +152,10 @@ while [ "$#" -gt 0 ]; do
 done
 [ -n "$out" ] || exit 2
 case "$url" in
-  https://api.github.com/repos/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest)
+  https://api.github.com/repos/@REPO@/releases/latest)
     printf 'check\\n' >> "$root/session/manager-checks.log"
     cp "$root/release.json" "$out";;
-  https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/download/v@VERSION@/plugin-manager-usb-v@VERSION@.zip)
+  https://github.com/@REPO@/releases/download/v@VERSION@/plugin-manager-usb-v@VERSION@.zip)
     printf 'download\\n' >> "$root/session/manager-downloads.log"
     sleep 1
     cp "$root/update.zip" "$out";;
@@ -161,7 +168,7 @@ out=
 while [ "$#" -gt 0 ]; do
   case "$1" in
     -O) out=$2; shift 2;;
-    https://api.github.com/repos/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest) break;;
+    https://api.github.com/repos/@REPO@/releases/latest) break;;
     *) shift;;
   esac
 done
@@ -170,12 +177,12 @@ done
 printf 'check\\n' >> "${out%/*}/manager-checks.log"
 sleep 1
 """ + ("exit 1\n" if mode == "sd-update-error" else """cat > "$out" <<'JSON'
-{"draft":false,"prerelease":false,"tag_name":"v@VERSION@","html_url":"https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/tag/v@VERSION@"}
+{"draft":false,"prerelease":false,"tag_name":"v@VERSION@","html_url":"https://github.com/@REPO@/releases/tag/v@VERSION@"}
 JSON
 """))
         else:
             downloader.write_text("#!/bin/sh\nexit 1\n")
-        downloader.write_text(downloader.read_text().replace("@VERSION@", version))
+        downloader.write_text(downloader.read_text().replace("@VERSION@", version).replace("@REPO@", manager_repo()))
         downloader.chmod(0o755)
     script = """set -eu
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -DMPC_MANAGER_SD_FIXTURE -Isrc -Itests -I/opt/sdl/include/SDL2 $(pkg-config --cflags freetype2) -c src/main.cpp -o /results/main.o
@@ -190,7 +197,7 @@ for mode in sd-unavailable sd-empty sd-cancel sd-install sd-remove sd-remove-cur
   env -u MPC_MANAGER_SD_HELPER PATH="$root/bin:$PATH" SDL_VIDEODRIVER=dummy MPC_MANAGER_UI_UPDATE_VERSION="@VERSION@" MPC_MANAGER_UI_TEST="$testmode" "$binary" "$root/source" "$root/session" "$root/Expansions" "$root/MPC.settings" /work/build/font.ttf
 done
 """
-    script = script.replace("@VERSION@", version)
+    script = script.replace("@VERSION@", version).replace("@REPO@", manager_repo())
     container = "mpc-manager-sd-ui-" + uuid.uuid4().hex[:12]
     command = ["docker", "run", "--rm", "--pull=never", "--name", container,
                "--platform=linux/arm/v7", "--network=none", "--read-only", "--memory=768m",

@@ -214,7 +214,7 @@ static Json managerReleaseAsset(const Json& release,const std::string& tag) {
         require(candidate==nullptr,"The manager release has duplicate ZIP assets");candidate=&asset;
     }
     require(candidate!=nullptr,"No supported manager ZIP is published");
-    const auto url="https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/download/"+tag+"/"+name;
+    const auto url="https://github.com/" MPC_MANAGER_REPO "/releases/download/"+tag+"/"+name;
     require(candidate->contains("state")&&candidate->at("state")=="uploaded"&&candidate->contains("browser_download_url")&&candidate->at("browser_download_url")==url,"The manager ZIP is unfinished or has an unexpected download URL");
     require(candidate->contains("size")&&candidate->at("size").is_number_unsigned()&&candidate->at("size").get<uint64_t>()>0&&candidate->at("size").get<uint64_t>()<=64ULL*1024*1024,"The manager ZIP size is unsupported");
     require(candidate->contains("digest")&&candidate->at("digest").is_string(),"The manager ZIP has no verified GitHub checksum");
@@ -226,7 +226,7 @@ Json Manager::checkManagerUpdate() {
     const auto path=session/"manager-release.json";
     fs::remove(path);
     try {
-        const auto status=runProcess({"wget","-T","15","-t","1","--header=Accept: application/vnd.github+json","-O",path.string(),"https://api.github.com/repos/Eurikon/plugin-manager-usb-for-open-mpc/releases/latest"},{},1024*1024);
+        const auto status=runProcess({"wget","-T","15","-t","1","--header=Accept: application/vnd.github+json","-O",path.string(),"https://api.github.com/repos/" MPC_MANAGER_REPO "/releases/latest"},{},1024*1024);
         require(status!=8,"GitHub rejected the manager update check (possibly rate limited); try again later");
         require(status==0,"Cannot check manager updates; check your Internet connection and try again");
         require(fs::is_regular_file(path)&&fs::file_size(path)>0&&fs::file_size(path)<=1024*1024,"Invalid manager release response");
@@ -239,7 +239,7 @@ Json Manager::checkManagerUpdate() {
         require(release.contains("tag_name")&&release.at("tag_name").is_string()&&release.contains("html_url")&&release.at("html_url").is_string(),"Invalid manager release response");
         const auto tag=release.at("tag_name").get<std::string>();
         const auto latest=managerReleaseVersion(tag),current=managerReleaseVersion(std::string("v")+MPC_MANAGER_VERSION);
-        const auto url="https://github.com/Eurikon/plugin-manager-usb-for-open-mpc/releases/tag/"+tag;
+        const auto url="https://github.com/" MPC_MANAGER_REPO "/releases/tag/"+tag;
         require(release.at("html_url")==url,"Manager release URL does not match its repository and version");
         const bool available=latest>current,development=MPC_MANAGER_DEVELOPMENT;
         std::string message;

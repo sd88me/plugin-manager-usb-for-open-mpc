@@ -1,9 +1,12 @@
 # Changelog
 
-## Unreleased
+## 1.2.3 — 29-10-2026 (sd88me fork of upstream 1.2.2)
+
+This fork exists to ship the OpenMPC Plugin Manager G2 welcome-screen option while the same change (upstream pull request #10) is under review. It is upstream 1.2.2 plus the changes below; when upstream carries them, switch back to the upstream release. Its in-manager update check looks at **this** repository's releases, not upstream's, so a fork build is not moved back to a release without the G2 option. Version numbers here are the fork's own.
 
 - Offer **OpenMPC Plugin Manager G2** (poloq's Plugin Manager with Gen 2 support) on the welcome screen instead of poloq's own build, which has no Gen 2 package. Its release is found by tag prefix (`plugin-manager-g2-v<version>`, taken from the catalog entry `plugin-manager-g2`) and exact package name, not by the repository's latest release, because that repository publishes other releases too. The repository, tag prefix, package prefix, catalog id and button name are constants in `src/plugin_manager_option.hpp`.
 - Disable the welcome-screen plugin-manager option, with the reason shown, until a plugin installation location is chosen in SETUP. Before, the button was enabled on a Gen 2 device whose MPC has no content drive set, and tapping it failed with "Choose a plugin installation location in SETUP".
+- The manager's update check, release URLs and downloads use `MPC_MANAGER_REPO` (`src/version.hpp`) instead of a hard-coded repository.
 
 ## 1.2.2 — 28-10-2026
 
